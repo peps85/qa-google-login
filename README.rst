@@ -4,7 +4,9 @@ Question2Answer Google Login v 0.5
 -----------
 Description
 -----------
+
 This is a plugin for **Question2Answer** that allows users to log in via Google (OpenID)
+
 
 
 ------------
