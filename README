@@ -1,7 +1,7 @@
-Allows users to log in via Google
+<h1>Allows users to log in via Google</h1>
 
-ATTENTION: you need the LightOpenID library in order to use this plugin!!!!
-Please download it from http://gitorious.org/lightopenid/lightopenid/blobs/raw/master/openid.php end put it in the qa-google-login folder.
+<br>ATTENTION: you need the LightOpenID library in order to use this plugin!!!!<br>
+Please download it from http://gitorious.org/lightopenid/lightopenid/blobs/raw/master/openid.php and put it in the qa-google-login folder.
 
 
-0.5V: from the google account gets only the email address and the firt name.
+0.5V: only gets from the google account the email address and the first name.
