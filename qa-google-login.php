@@ -6,10 +6,10 @@
 	http://www.question2answer.org/
 
 	
-	File: qa-plugin/facebook-login/qa-facebook-login.php
+	File: qa-plugin/google-login/qa-google-login.php
 	Version: 1.4.3
 	Date: 2011-09-27 18:06:46 GMT
-	Description: Login module class for Facebook login plugin
+	Description: Login module class for Google login plugin
 
 
 	This program is free software; you can redistribute it and/or
@@ -38,8 +38,12 @@
 		
 		function check_login()
 		{
+			$site_domain=qa_opt('google_site_domain');
+			if (!(strlen($site_domain)))
+				return;
+		
 			require_once 'openid.php';
-			$openid = new LightOpenID("cting.org"); // CHANGE IT
+			$openid = new LightOpenID($site_domain);
 		
 			if ($openid->mode) {
 				if ($openid->mode == 'cancel') {
@@ -53,12 +57,8 @@
 								'handle' => @$first,
 								'confirmed' => @true,								
 							));
-				} else {
-					echo "The user has not logged in";
-				}
-			} else {
-				echo "Go to index page to log in.";
-			}			
+				} 
+			} 		
 		}
 		
 		function match_source($source)
@@ -68,8 +68,12 @@
 		
 		function login_html($tourl, $context)
 		{
+			$site_domain=qa_opt('google_site_domain');
+			if (!(strlen($site_domain)))
+				return;
+				
 			require_once 'openid.php';
-			$openid = new LightOpenID("my-domain.com");
+			$openid = new LightOpenID($site_domain);
 			 
 			$openid->identity = 'https://www.google.com/accounts/o8/id';
 			$openid->required = array(
@@ -77,7 +81,7 @@
 			  'namePerson/last',
 			  'contact/email',
 			);
-			$openid->returnUrl = 'http://cting/~peps/index.php'
+
 			?>
  
 			<a href="<?php echo $openid->authUrl() ?>">Login with Google</a>
@@ -87,43 +91,40 @@
 		
 		function logout_html($tourl)
 		{
-			session_destroy();
+			$site_domain=qa_opt('google_site_domain');
+			if (!(strlen($site_domain)))
+				return;
+            ?>
+			    <a href="?qa=logout">Logout</a> 
+			<?			
 		}
 		
 		function admin_form()
 		{
 			$saved=false;
 			
-			if (qa_clicked('facebook_save_button')) {
-				qa_opt('facebook_app_id', qa_post_text('facebook_app_id_field'));
-				qa_opt('facebook_app_secret', qa_post_text('facebook_app_secret_field'));
+			if (qa_clicked('google_login_save_button')) {
+				qa_opt('google_site_domain', qa_post_text('google_site_domain_field'));				
 				$saved=true;
 			}
 			
-			$ready=strlen(qa_opt('facebook_app_id')) && strlen(qa_opt('facebook_app_secret'));
+			$ready=strlen(qa_opt('google_site_domain')); 
 			
 			return array(
-				'ok' => $saved ? 'Facebook application details saved' : null,
+				'ok' => $saved ? 'Google application details saved' : null,
 				
 				'fields' => array(
 					array(
-						'label' => 'Your Facebook App ID:',
-						'value' => qa_html(qa_opt('facebook_app_id')),
-						'tags' => 'NAME="facebook_app_id_field"',
-					),
-
-					array(
-						'label' => 'Your Facebook App Secret:',
-						'value' => qa_html(qa_opt('facebook_app_secret')),
-						'tags' => 'NAME="facebook_app_secret_field"',
-						'error' => $ready ? null : 'To use Facebook Login, please <A HREF="http://developers.facebook.com/setup/" TARGET="_blank">set up a Facebook application</A>.',
+						'label' => 'Your Site Domain (like example.com):',
+						'value' => qa_html(qa_opt('google_site_domain')),
+						'tags' => 'NAME="google_site_domain_field"',
 					),
 				),
 				
 				'buttons' => array(
 					array(
 						'label' => 'Save Changes',
-						'tags' => 'NAME="facebook_save_button"',
+						'tags' => 'NAME="google_login_save_button"',
 					),
 				),
 			);

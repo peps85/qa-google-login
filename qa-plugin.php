@@ -29,7 +29,7 @@
 	Plugin Name: Google Login
 	Plugin URI: 
 	Plugin Description: Allows users to log in via Google
-	Plugin Version: 0.5
+	Plugin Version: 0.1
 	Plugin Date: 2012-01-26
 	Plugin Author: Giuseppe Meloni
 	Plugin Author URI: http://www.question2answer.org/
